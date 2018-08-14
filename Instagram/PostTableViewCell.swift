@@ -1,6 +1,6 @@
 //
 //  PostTableViewCell.swift
-//  
+//
 //
 //  Created by 長谷川良 on 2018/08/14.
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeLabel: UILabel!
@@ -18,10 +18,10 @@ class PostTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     func setPostData(_ postData: PostData) {
