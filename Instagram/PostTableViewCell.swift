@@ -7,13 +7,16 @@
 
 import UIKit
 
-class PostTableViewCell: UITableViewCell {
+class PostTableViewCell: UITableViewCell{
+    weak var owner: UIViewController?
     
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var commentButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -29,7 +32,7 @@ class PostTableViewCell: UITableViewCell {
         
         self.captionLabel.text = "\(postData.name!) : \(postData.caption!)"
         let likeNumber = postData.likes.count
-        likeLabel.text = "\(likeNumber)"
+        likeLabel.text = "いいね\(likeNumber)件"
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"

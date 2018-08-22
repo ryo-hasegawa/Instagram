@@ -17,6 +17,7 @@ class HomeViewController: UIViewController,UITableViewDataSource,UITableViewDele
 
     var postArray: [PostData] = []
     
+   
     // DatabaseのobserveEventの登録状態を表す
     var observing = false
     override func viewDidLoad() {
@@ -117,6 +118,8 @@ class HomeViewController: UIViewController,UITableViewDataSource,UITableViewDele
         // セル内のボタンのアクションをソースコードで設定する
         cell.likeButton.addTarget(self, action:#selector(handleButton(_:forEvent:)), for: .touchUpInside)
         
+        cell.commentButton.addTarget(self, action:#selector(commentButton(_:forEvent:)), for: .touchUpInside)
+        
         return cell
     }
     // セル内のボタンがタップされた時に呼ばれるメソッド
@@ -154,6 +157,29 @@ class HomeViewController: UIViewController,UITableViewDataSource,UITableViewDele
             postRef.updateChildValues(likes)
             
         }
+        
+    }
+    //コメントボタンを押された時に呼ばれるメソッド
+    @objc func commentButton(_ sender: UIButton, forEvent event: UIEvent){
+    
+    print("DEBUG_PRINT: commentボタンがタップされました。")
+        // タップされたセルのインデックスを求める
+        let touch = event.allTouches?.first
+        let point = touch!.location(in: self.tableView)
+        let indexPath = tableView.indexPathForRow(at: point)
+        
+        // 配列からタップされたインデックスのデータを取り出す
+        let postData = postArray[indexPath!.row]
+        
+        
+        
+        let commentEditViewController = self.storyboard?.instantiateViewController(withIdentifier: "Comment") as! CommentViewController
+        //遷移先にデータを渡す
+        commentEditViewController.postdata =  postData
+        //画面遷移
+        self.present(commentEditViewController, animated: true, completion: nil)
+        
+    
         
     }
     override func didReceiveMemoryWarning() {
