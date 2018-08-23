@@ -23,17 +23,19 @@ class CommentData: NSObject {
     var date: Date?
     //
     init(snapshot: DataSnapshot) {
-        self.postId = snapshot.key
-    
+        //self.postId = snapshot.key
+     print(snapshot.value)
     let valueDictionary = snapshot.value as! [String: Any]
-    
+        self.postId = valueDictionary["postId"] as? String
+        
         self.name = valueDictionary["name"] as? String
         
         self.caption = valueDictionary["caption"] as? String
         
         let time = valueDictionary["time"] as? String
-        self.date = Date(timeIntervalSinceReferenceDate: TimeInterval(time!)!)
         
+        self.date = Date(timeIntervalSinceReferenceDate: TimeInterval(time!)!)
+       
         
     }
     

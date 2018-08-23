@@ -46,19 +46,97 @@ class CommentViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        print("DEBUG_PRINT: viewWillAppear")
+        if Auth.auth().currentUser != nil {
+            if self.observing == false {
+                // 要素が追加されたらpostArrayに追加してTableViewを再表示する
+                let commentsRef = Database.database().reference().child(Const.CommentPath).child(postdata.id!)
+                commentsRef.observe(.childAdded, with: { snapshot in
+                    print("DEBUG_PRINT: .childAddedイベントが発生しました。")
+                    
+                    // CommentDataクラスを生成して受け取ったデータを設定する
+                    if (Auth.auth().currentUser?.uid) != nil {
+                        let commentData = CommentData(snapshot: snapshot)
+                        self.commentArray.insert(commentData, at: 0)
+                        
+                        // TableViewを再表示する
+                        self.tableView.reloadData()
+                    }
+                })
+                // 要素が変更されたら該当のデータをpostArrayから一度削除した後に新しいデータを追加してTableViewを再表示する
+                commentsRef.observe(.childChanged, with: { snapshot in
+                    print("DEBUG_PRINT: .childChangedイベントが発生しました。")
+                    
+                    if (Auth.auth().currentUser?.uid) != nil {
+                        // PostDataクラスを生成して受け取ったデータを設定する
+                        let commentData = CommentData(snapshot: snapshot)
+                        
+                        // 保持している配列からidが同じものを探す
+                        var index: Int = 0
+                        for comment in self.commentArray {
+                            if comment.postId == commentData.postId {
+                                index = self.commentArray.index(of: comment)!
+                                break
+                            }
+                        }
+                        
+                        // 差し替えるため一度削除する
+                        self.commentArray.remove(at: index)
+                        
+                        // 削除したところに更新済みのデータを追加する
+                        self.commentArray.insert(commentData, at: index)
+                        
+                        // TableViewを再表示する
+                        self.tableView.reloadData()
+                    }
+                })
+                
+                // DatabaseのobserveEventが上記コードにより登録されたため
+                // trueとする
+                observing = true
+            }
+        } else {
+            if observing == true {
+                // ログアウトを検出したら、一旦テーブルをクリアしてオブザーバーを削除する。
+                // テーブルをクリアする
+                commentArray = []
+                tableView.reloadData()
+                // オブザーバーを削除する
+                Database.database().reference().removeAllObservers()
+                
+                // DatabaseのobserveEventが上記コードにより解除されたため
+                // falseとする
+                observing = false
+            }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
 
 }
-
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return commentArray.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // セルを取得してデータを設定する
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CommentTableViewCell
+        cell.setCommentData(commentArray[indexPath.row])
+        
+        return cell
+    }
+    
+    //投稿ボタンが押された時のアクション
+    @IBAction func commentButton(_ sender: Any) {
+        //必要なデータを取得しておく
+        let time = Date.timeIntervalSinceReferenceDate
+        let name = Auth.auth().currentUser?.displayName
+        let caption = textField.text!
+        let postId = postdata.id!
+        
+        let commentRef = Database.database().reference().child(Const.CommentPath).child(postId)
+        let commentDic = ["caption": caption, "time": String(time), "name": name!,"postId": postId]
+        commentRef.childByAutoId().setValue(commentDic)
+        
+        
+    }
+    
+    
 }
