@@ -39,7 +39,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ad-Wq-Pd8">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ad-Wq-Pd8">
                         <rect key="frame" x="16" y="21" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
@@ -47,6 +47,7 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="ZWY-iW-Nfz" secondAttribute="bottom" constant="84.5" id="6ea-6c-yOj"/>
                     <constraint firstItem="ZWY-iW-Nfz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Igj-YL-Emc"/>
                     <constraint firstItem="J7J-g9-Myn" firstAttribute="centerY" secondItem="1ad-Wq-Pd8" secondAttribute="centerY" id="Kbl-HZ-Iee"/>
                     <constraint firstItem="1ad-Wq-Pd8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="Own-P4-n0b"/>
