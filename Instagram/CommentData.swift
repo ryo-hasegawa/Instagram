@@ -24,7 +24,7 @@ class CommentData: NSObject {
     //
     init(snapshot: DataSnapshot) {
         //self.postId = snapshot.key
-     print(snapshot.value)
+     print(snapshot.value!)
     let valueDictionary = snapshot.value as! [String: Any]
         self.postId = valueDictionary["postId"] as? String
         
