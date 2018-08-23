@@ -139,6 +139,8 @@ class CommentViewController: UIViewController,UITableViewDelegate,UITableViewDat
         let caption = textField.text!
         let postId = postdata.id!
         
+        
+        
         let commentRef = Database.database().reference().child(Const.CommentPath).child(postId)
         let commentDic = ["caption": caption, "time": String(time), "name": name!,"postId": postId]
         commentRef.childByAutoId().setValue(commentDic)
